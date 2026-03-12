@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DAILY CHRONICLE | Premium News</title>
+    
+    <!-- Google AdSense Code -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1180121660205807" crossorigin="anonymous"></script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
@@ -32,7 +36,7 @@
         
         .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
         
-        /* Modal Animation */
+        /* Modal Overlay */
         #page-overlay { 
             display: none; 
             position: fixed; inset: 0; background: #fdfbf7; z-index: 100;
@@ -43,7 +47,7 @@
 </head>
 <body class="relative">
 
-    <!-- Universal Overlay (For About, Privacy, Contact, and Reading Articles) -->
+    <!-- Universal Overlay (For Reader Mode and Static Pages) -->
     <div id="page-overlay">
         <div class="max-w-4xl mx-auto px-6 py-20 relative">
             <button onclick="closeOverlay()" class="fixed top-8 right-8 z-[110] bg-black text-white px-4 py-2 text-xs font-bold tracking-widest hover:bg-amber-800 transition">
@@ -82,11 +86,15 @@
         </div>
 
         <div id="content-area" class="hidden">
+            <!-- Hero Story -->
             <section id="hero-section" class="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-16 border-b border-gray-200 pb-16"></section>
+            
             <div class="flex justify-between items-center mb-8">
                 <h2 class="royal-font text-3xl font-bold italic">Latest Dispatches</h2>
                 <div class="h-[1px] bg-gray-300 flex-grow ml-6"></div>
             </div>
+            
+            <!-- News Grid -->
             <section id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"></section>
         </div>
 
@@ -110,7 +118,7 @@
 
     <script>
         const API_KEY = '9953be50f7d943cc8cf30a5204cf0d3e';
-        let articlesData = []; // Store fetched news locally for reader mode
+        let articlesData = []; 
 
         document.getElementById('date-box').innerText = new Date().toLocaleDateString('en-US', { 
             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
@@ -131,17 +139,17 @@
                 const data = await response.json();
 
                 if (data.news && data.news.length > 0) {
-                    articlesData = data.news; // Save to memory
+                    articlesData = data.news; 
                     renderArticles(articlesData);
                     loader.classList.add('hidden');
                     content.classList.remove('hidden');
                 } else {
-                    throw new Error("The news feed is currently empty. Please try another section.");
+                    throw new Error("Section currently unavailable.");
                 }
             } catch (error) {
                 loader.classList.add('hidden');
                 errorBox.classList.remove('hidden');
-                document.getElementById('error-message').innerText = "Unable to connect. The daily API limit may have been reached.";
+                document.getElementById('error-message').innerText = "Unable to connect to news bureaus. API limit might be reached.";
             }
         }
 
@@ -189,7 +197,7 @@
             });
         }
 
-        // --- THE READER MODE ---
+        // Reader Mode Function
         function openReader(index) {
             const article = articlesData[index];
             const overlay = document.getElementById('page-overlay');
@@ -217,9 +225,9 @@
                     </div>
 
                     <div class="mt-16 pt-10 border-t border-gray-200 text-center">
-                        <p class="serif-body italic text-gray-500 mb-4">You have reached the end of this digital dispatch.</p>
+                        <p class="serif-body italic text-gray-500 mb-4">End of dispatch.</p>
                         <a href="${article.url}" target="_blank" class="text-xs font-bold uppercase tracking-widest bg-black text-white px-8 py-3 hover:bg-amber-800 transition">
-                            Visit Original Source Site
+                            Visit Original Source
                         </a>
                     </div>
                 </div>
@@ -235,14 +243,14 @@
 
             if (page === 'about') {
                 content.innerHTML = `<h2 class="royal-font text-5xl mb-8 border-b-2 border-black pb-4 text-center">About Us</h2>
-                <p class="serif-body text-xl leading-relaxed text-center max-w-2xl mx-auto">The Daily Chronicle is a premium news curator dedicated to delivering high-impact journalism in an elegant, traditional format for the modern reader.</p>`;
+                <p class="serif-body text-xl leading-relaxed text-center max-w-2xl mx-auto">The Daily Chronicle is a premium news curator dedicated to high-impact journalism in an elegant traditional format.</p>`;
             } else if (page === 'privacy') {
                 content.innerHTML = `<h2 class="royal-font text-5xl mb-8 border-b-2 border-black pb-4 text-center">Privacy Policy</h2>
-                <p class="serif-body text-lg text-gray-700 max-w-2xl mx-auto">We value your privacy. We do not store personal data. Our site uses the World News API to provide content. Cookies are used only for site performance.</p>`;
+                <p class="serif-body text-lg text-gray-700 max-w-2xl mx-auto">We value your privacy. This site uses World News API for content and Google AdSense for advertisements. We do not store personal reader data.</p>`;
             } else if (page === 'contact') {
                 content.innerHTML = `<h2 class="royal-font text-5xl mb-8 border-b-2 border-black pb-4 text-center">Contact Us</h2>
                 <div class="text-center">
-                    <p class="serif-body text-xl mb-6">Inquiries may be directed to our main desk:</p>
+                    <p class="serif-body text-xl mb-6">Direct inquiries to:</p>
                     <a href="mailto:h05828990@gmail.com" class="royal-font text-4xl underline hover:text-amber-800 transition">h05828990@gmail.com</a>
                 </div>`;
             }
